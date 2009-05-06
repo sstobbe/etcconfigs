@@ -1,0 +1,42 @@
+#!/bin/sh
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+# We need to source this so that the login screens get translated
+[ -f /etc/sysconfig/i18n ] && . /etc/sysconfig/i18n
+
+# Run preferred X display manager
+quit_arg=
+preferred=
+if [ -f /etc/sysconfig/desktop ]; then
+	. /etc/sysconfig/desktop
+	if [ "$DISPLAYMANAGER" = GNOME ]; then
+		preferred=/usr/sbin/gdm
+		quit_arg="--retain-splash"
+	elif [ "$DISPLAYMANAGER" = KDE ]; then
+		preferred=/usr/bin/kdm
+	elif [ "$DISPLAYMANAGER" = WDM ]; then
+		preferred=/usr/bin/wdm
+	elif [ "$DISPLAYMANAGER" = XDM ]; then
+	        preferred=/usr/bin/xdm
+        elif [ -n "$DISPLAYMANAGER" ]; then
+		preferred=$DISPLAYMANAGER
+	fi
+else
+	quit_arg="--retain-splash"
+fi
+
+# shut down boot splash
+/usr/bin/plymouth quit $quit_arg
+
+shopt -s execfail
+
+[ -n "$preferred" ] && exec $preferred "$@" >/dev/null 2>&1 </dev/null
+
+# Fallbacks, in order
+exec gdm "$@" >/dev/null 2>&1 </dev/null
+exec kdm "$@" >/dev/null 2>&1 </dev/null
+exec wdm "$@" >/dev/null 2>&1 </dev/null
+exec xdm "$@" >/dev/null 2>&1 </dev/null
+# catch all exit error
+exit 1
