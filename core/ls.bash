@@ -1,0 +1,10 @@
+#!/bin/bash
+alias ls="ls --color=auto"
+alias ll="ls -lh --color=auto"
+alias lsa="ls -a --color=auto"
+alias lla="ls -lah --color=auto"
+alias llt="ls -alth --color=auto"
+alias lsx="ls -X --color=auto"
+alias llx="ls -lXh --color=auto"
+alias lss="ls -S --color=auto"
+alias lls="ls -lSh --color=auto"
