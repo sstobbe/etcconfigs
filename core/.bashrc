@@ -5,6 +5,6 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-source ls.bash
+source $HOME/ls.bash
 
 # User specific aliases and functions
